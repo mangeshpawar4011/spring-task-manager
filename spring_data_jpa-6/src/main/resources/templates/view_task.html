@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Tasks</title>
+    <style>
+        /* Your existing styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .search-box {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-box input {
+            padding: 8px;
+            font-size: 14px;
+            width: 300px;
+        }
+
+        .search-box button {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Styling for task boxes */
+        .task-box {
+            background-color: #fff;
+            margin: 15px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-box h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .task-box p {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .task-box .created-date {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .task-box .actions a {
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .task-box .actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .task-box .actions a.delete {
+            background-color: #dc3545;
+        }
+
+        .task-box .actions a.delete:hover {
+            background-color: #c82333;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>📋 All Tasks</h2>
+
+    <div class="search-box">
+        <form th:action="@{/search}" method="get">
+            <input type="text" name="keyword" placeholder="Search by title..." />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="task-list">
+        <div class="task-box" th:each="task : ${tasks}">
+            <h3 th:text="${task.title}"></h3>
+            <p th:text="${task.description}"></p>
+            <p class="created-date" th:text="${#temporals.format(task.createdDate, 'dd-MM-yyyy')}"></p>
+            <div class="actions">
+                <a th:href="@{'/edit/' + ${task.taskId}}">Edit</a>
+                <a th:href="@{'/delete/' + ${task.taskId}}" class="delete" onclick="return confirm('Are you sure you want to delete this task?')">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <a class="back-link" th:href="@{/}">← Back to Home</a>
+
+</body>
+</html>

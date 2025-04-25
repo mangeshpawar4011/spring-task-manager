@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Task</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .form-container {
+                padding: 20px;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>✏️ Edit Task</h2>
+    <form th:action="@{/update}" th:object="${task}" method="post">
+        
+        <!-- Error messages -->
+        <div th:if="${#fields.hasErrors('title')}" class="error-message">
+            <p th:errors="*{title}">Please enter a valid title.</p>
+        </div>
+        <input type="hidden" th:field="*{taskid}" />
+        <input type="text" th:field="*{title}" placeholder="Title" required />
+
+        <div th:if="${#fields.hasErrors('description')}" class="error-message">
+            <p th:errors="*{description}">Description is required.</p>
+        </div>
+        <textarea th:field="*{description}" placeholder="Description" rows="4" required></textarea>
+        
+        <button type="submit">Update Task</button>
+    </form>
+    <a class="back-link" th:href="@{/view}">← Back to Task List</a>
+</div>
+</body>
+</html>
